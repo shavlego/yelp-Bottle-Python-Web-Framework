@@ -1,0 +1,67 @@
+
+
+#Ερώτημα 1:
+
+select name, yelping_since, review_count
+from user
+where name = 'Lisa' and review_count > 500
+order by yelping_since;
+
+
+#Ερώτημα 2:
+
+select  u.user_id, b.business_id, r.review_id
+from  user u, reviews r, business b
+where u.user_id = r.user_id and r.business_id = b.business_id
+    and u.name = 'Lisa' and b.name = 'Gab & Eat';
+
+#Ερωτημα 3:
+
+select answer
+from (
+    select count(distinct 1) as value
+    from reviews r, reviews_pos_neg r_pn
+    where r.review_id = r_pn.review_id
+        and r.business_id = 'OmpbTu4deR3ByOo7btTTZw'
+        and r_pn.positive = true
+    ) as val,
+    (
+        select 1 as value, 'yes' as answer
+        union
+        select 0 as value, 'no' as answer
+    ) as val2str
+where val.value = val2str.value;
+
+
+
+#Ερώτημα 4:
+
+select r.business_id, count(r_pn.positive)
+from reviews r, reviews_pos_neg r_pn
+where r.review_id = r_pn.review_id and r.date >= '2014-01-01'
+    and r.date <= '2014-12-31'
+group by r.business_id
+having count(*) > 10;
+
+
+
+#Ερώτημα 5:
+
+select r.user_id, count(r.review_id)
+from reviews r, business_category bc , category c
+where r.business_id = bc.business_id and bc.category_id = c.category_id
+    and c.category = 'Mobile Phones'
+group by r.user_id;
+
+
+
+#Ερωτημα 6:
+
+select r.votes_useful, r.user_id, b.name
+from reviews r, business b
+where r.business_id = b.business_id and b.name = 'Midas'
+order by r.votes_useful desc;
+
+
+
+
